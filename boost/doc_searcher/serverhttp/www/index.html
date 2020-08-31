@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my searcher engine</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		html,body {
+			height: 100%;
+            background-image: url("back1.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+			background-attachment:fixed;
+		}
+
+		.all {
+			
+			width: 700px;
+			margin: 50px auto;
+		}
+		
+		.column {
+			height: 60px;
+			margin: 10px auto;
+		}
+		
+		.column input {
+			width: 600px;
+			height: 50px;
+			font-size: 22px;
+			float: left;
+			border: 2px solid red;
+			border-radius: 15px 0px 0px 15px;
+		}
+		
+		.column button {
+			width: 100px;
+			height: 50px;
+			float: left;
+			background-color: #4CAF50;
+			font-size: 20px;
+			border-radius: 0px 15px 15px 0px;
+		}
+		
+		.column button:hover {
+			background-color: #45a049;
+		}
+		
+		.content .info {
+			margin: 10px auto;
+			width: 650px;
+		}
+		
+		.content .info i {
+            font-size: 16px;
+            color: rgb(0, 128, 0);
+            /* 默认 i 标签是斜体字, 这是把字正回来 */
+            font-style: normal;
+        }
+		
+		.content .info p {
+            font-size: 16px;
+        }
+	</style>
+</head>
+<body>
+	<div class="all" id="oper">
+		<!-- 搜索栏目 begin-->
+		<div class="column">
+			<input type="search" />
+		
+			<button v-on:click="search()">搜索</button>
+		</div>
+		<!-- 搜索栏目 end -->
+		
+		<!-- 显示结果 begin -->
+		<div class="content">
+			
+		</div>
+		<!-- 显示结果 end -->
+	</div>
+	
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+	
+	<script>
+		var oper = new Vue({
+            el: '#oper',
+            data: {
+                infos:[]
+            },
+            methods: {
+				buildContent: function(){
+					var result = $(".content");
+					result.empty();
+					
+					if(this.infos === null){
+						alert("not find");
+						var tmp = $("<div>",{
+							class:"info"
+						});
+						
+						var notFound = $("<h2>",{
+							text:"404 Not Found"
+						});
+						
+						notFound.appendTo(result);
+						return ;
+					}
+					
+						
+					for(var i = 0; i < this.infos.length; i++){
+
+						var title = $("<a>",{
+							text: this.infos[i].title,
+							href: this.infos[i].url,
+							target:"_blank"
+						});
+
+						var desc = $("<p>",{
+							text: this.infos[i].desc
+						});
+
+						var url = $("<i>",{
+							text: this.infos[i].url
+						});
+						
+						var item = $("<div>",{
+							class : "info"
+						});
+						
+						title.appendTo(item);
+						desc.appendTo(item);
+						url.appendTo(item);
+						
+						item.appendTo(result);
+					}
+				},
+				search : function (){
+					var query = $(".column input").val();
+			
+					$.ajax({
+						type:"get",
+						url:"searcher?query=" + query,
+						context: this,
+						success:function(data,status){
+							alert(query);
+							this.infos = data;
+							this.buildContent();
+						}
+					});
+				},
+			}
+		});
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my searcher engine</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="icon" href="./fno.jpg" type="image/x-icon"/>
+</head>
+
+<body>
+    <div class="all" id="oper">
+        <!-- 搜索栏目 begin-->
+        <div class="column">
+            <input type="search" />
+
+            <button v-on:click="search()">搜索</button>
+        </div>
+        <!-- 搜索栏目 end -->
+
+        <!-- 显示结果 begin -->
+        <div class="content">
+            <div class="info">
+                <h2>
+                    欢迎使用 简单 boost 在线文档的 搜索引擎
+                </h2>
+                
+                <h2>
+                    在搜索框汇中输入待搜索文本，点击搜索，即可
+                </h2>
+            </div>
+        </div>
+        <!-- 显示结果 end -->
+
+        <div class="page">
+            <button class="prev" v-on:click="prepage()">上一页</button>
+            <button class="next" v-on:click="nextpage()">下一页</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+    <script>
+        var oper = new Vue({
+            el: '#oper',
+            data: {
+                len: 10,
+                idx: 0, // 当前页号
+                cnt: 0, // 总页号
+                infos: []
+            },
+            methods: {
+                build: function() {
+                    var result = $(".content");
+                    result.empty();
+
+                    
+                    for (var i = this.idx * this.len, j = 0; i < this.infos.length && j < this.len; i++, j++) {
+                        var title = $("<a>", {
+                            text: this.infos[i].title,
+                            href: this.infos[i].url,
+                            target: "_blank"
+                        });
+
+                        var desc = $("<p>", {
+                            text: this.infos[i].desc
+                        });
+
+                        var url = $("<i>", {
+                            text: this.infos[i].url
+                        });
+
+                        var item = $("<div>", {
+                            class: "info"
+                        });
+
+                        title.appendTo(item);
+                        desc.appendTo(item);
+                        url.appendTo(item);
+
+                        item.appendTo(result);
+                    }
+                },
+                slove: function() {
+                    var result = $(".content");
+                    result.empty();
+
+                    this.idx = 0;
+                    this.cnt = 0;
+
+                    if (this.infos === null) {
+                        this.infos = [];
+                        alert("not find");
+
+                        var notFound = $("<h2>", {
+                            text: "404 Not Found"
+                        });
+
+                        notFound.appendTo(result);
+                        return;
+                    }
+                    
+                    this.cnt = Math.floor(this.infos.length / this.len) ;
+                    this.build();
+                },
+                search: function() {
+                    var query = $(".column input").val();
+                    if (query.length === 0) {
+                        alert("请输入搜索内容");
+                        return;
+                    }
+
+                    alert(query);
+                    $.ajax({
+                        type: "get",
+                        url: "searcher?query=" + query,
+                        context: this,
+                        success: function(data, status) {
+                            this.infos = data;
+                            this.slove();
+                        }
+                    });
+                },
+                prepage: function() {
+                    if (this.idx <= 0) {
+                        this.idx = 0;
+                        alert("已经是首页了");
+                        return;
+                    }
+                    this.idx = this.idx - 1;
+                    this.build();
+                },
+                nextpage: function() {
+                    if (this.idx >= this.cnt) {
+                        alert("已经是尾页了");
+                        return;
+                    }
+                    this.idx = this.idx + 1;
+                    this.build();
+                },
+            }
+        });
+    </script>
+</body>
+
+</html>

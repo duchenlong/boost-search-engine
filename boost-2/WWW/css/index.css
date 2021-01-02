@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    background-image: url("../back1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+}
+
+.all {
+    width: 1000px;
+    margin: 50px auto;
+}
+
+.column {
+    height: 60px;
+    margin: 10px auto;
+}
+
+.column input {
+    width: 700px;
+    height: 50px;
+    font-size: 22px;
+    float: left;
+    border: 2px solid red;
+    margin-left: 100px;
+    border-radius: 15px 0px 0px 15px;
+}
+
+.column button {
+    width: 100px;
+    height: 50px;
+    float: left;
+    background-color: #4CAF50;
+    font-size: 20px;
+    border-radius: 0px 15px 15px 0px;
+}
+
+.column button:hover {
+    background-color: #45a049;
+}
+
+.content .info {
+    opacity: 0.8;
+    margin: 10px auto;
+    width: 1000px;
+    background-color: #ddd;
+    cursor: default
+}
+
+.content .info:hover {
+    background-color: #909090;
+    color: black;
+}
+
+.content .info i {
+    font-size: 16px;
+    color: rgb(0, 128, 0);
+    /* 默认 i 标签是斜体字, 这是把字正回来 */
+    font-style: normal;
+}
+
+.content .info p {
+    font-size: 16px;
+}
+
+.content h2 {
+    text-align:center;
+}
+
+.page .prev {
+    width: 100px;
+    height: 50px;
+    float: left;
+    background-color: #4CAF50;
+    font-size: 20px;
+    border-radius: 15px 0px 0px 15px;
+}
+
+.page .next {
+    width: 100px;
+    height: 50px;
+    float: right;
+    background-color: #4CAF50;
+    font-size: 20px;
+    border-radius: 0px 15px 15px 0px;
+}
+
+.page button:hover {
+    background-color: #45a049;
+}

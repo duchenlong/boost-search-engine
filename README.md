@@ -1,6 +1,3 @@
-# projects
-课程设计与一些项目的学习
-
 # boost search engine
 > 博客地址：[https://blog.csdn.net/duchenlong/article/details/108189922](https://blog.csdn.net/duchenlong/article/details/108189922)
 

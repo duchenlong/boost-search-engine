@@ -151,7 +151,7 @@ namespace searcher {
             backIdx._docId  = doc_info._docId;
 
             //自定义 权值 = 10 * titleCnt + contentCnt
-            backIdx._weight = 10 * word_pair.second._titleCnt + word_pair.second._contentCnt;
+            backIdx._weight = 100 * word_pair.second._titleCnt + word_pair.second._contentCnt;
             backIdx._word   = word_pair.first;
 
             vector<backwardIdx>& back_vector = inverted_index[word_pair.first];
@@ -199,11 +199,15 @@ namespace searcher {
         //  包装
         Json::Value value;
         int cnt = 0;
+        vector<bool> st(7000,false); 
         for(const auto& backidx : wordsResult){
             //cout << cnt << "-";
-            if(++cnt > 100) break;
+            if(cnt > 100) break;
             //  根据 id 查找正排索引
             const frontIdx* doc_info = index->GetFrontIdx(backidx._docId);
+            if(st[doc_info->_docId]) continue;
+            cnt ++;
+            st[doc_info->_docId] = true;
 
             Json::Value tmp;
             tmp["title"]    = doc_info->_title;
